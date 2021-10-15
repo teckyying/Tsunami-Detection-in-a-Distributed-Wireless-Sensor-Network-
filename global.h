@@ -21,10 +21,9 @@
 #define TRUE 1
 #define FALSE 0
 
-
 /*  Function Prototypes */
-void base_station(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int num_of_iterations);
-void sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int threshold);
+int base_station(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int num_of_iterations);
+int sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int threshold);
 
 
 #endif
