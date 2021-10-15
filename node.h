@@ -12,14 +12,6 @@ struct Node {
     float height;   // readings from the sensor
     float moving_average;   // current moving average of height
     struct Node* next;
-
-    // only store these values if height exceeds the threshold
-    int match;  // number of neighbours with matching values
-    int coords[2];
-    int neighbour_ranks[4];
-    int neighbour_coords[4][2]; 
-    int neighbour_readings[4];
-    int time;
 };
 
 struct Node* newNode(int rank, float height){

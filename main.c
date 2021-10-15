@@ -1,7 +1,6 @@
 /**
- * mpicc -Wall -o main.o main.c base_station.c sensor_node.c
- * mpirun -np 5 main.o 2 2 6000 20
- * mpirun -oversubscribe -np 10 main.o 3 3 6000 20
+ * mpicc -Wall -pthread -o main.o main.c base_station.c sensor_node.c -lm
+ * mpirun -oversubscribe -np 5 main.o 2 2 6000 20
  *  mpirun -np 2 main.o
  * */
 
@@ -13,9 +12,10 @@ int main(int argc, char *argv[]) {
 	int threshold;
 	int num_of_iterations;
 	MPI_Comm comm;
-	
+
 	/* Initialize MPI environment */
-	MPI_Init(&argc, &argv);
+	int provided;
+	MPI_Init_thread(&argc, &argv, MPI_THREAD_MULTIPLE, &provided);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 	
@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
 		nrows = atoi (argv[1]);
 		ncols = atoi (argv[2]);
 		threshold = atoi (argv[3]);
+		
 		num_of_iterations = atoi(argv[4]);
 		if( (nrows * ncols) != size - 1) {
 			if (rank == 0){
@@ -42,13 +43,14 @@ int main(int argc, char *argv[]) {
 	MPI_Comm_split(MPI_COMM_WORLD, rank == size - 1, 0, &comm);
 	
 	if (rank == size - 1){
-        base_station(MPI_COMM_WORLD, comm, nrows, ncols, num_of_iterations);
+        base_station(MPI_COMM_WORLD, comm, nrows, ncols, num_of_iterations, threshold);
     }
 	else
 		sensor_node(MPI_COMM_WORLD, comm, nrows, ncols, threshold);
 	
 
     // MPI_Comm_free(&comm);
+	
 	MPI_Finalize();
 	return 0;
 }

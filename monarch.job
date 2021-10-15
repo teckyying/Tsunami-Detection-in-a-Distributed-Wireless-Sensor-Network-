@@ -1,0 +1,27 @@
+#!/bin/bash 
+#SBATCH --job-name=mpi_job ### name your job 
+#SBATCH --time=00:10:00		 ### hh:mm:ss or dd-hh:mm:ss
+#SBATCH --mem=32G				 ### memory setting is max @ 4 GB per core
+#SBATCH --ntasks=10				 ### launch one python process
+#SBATCH --cpus-per-task=1		 ### single-threaded processes
+#SBATCH --ntasks-per-node=5   ### so 2 nodes
+
+#SBATCH --partition=short,comp,gpu
+
+#SBATCH --output=mpi.%j.out
+
+module load openmpi/3.1.6-ucx
+
+if [ ! -f mpi ]
+then
+ mpicc main.c base_station.c sensor_node.c -o main.o  -lpthread  -lm -std=c99 -D_POSIX_C_SOURCE=199309L
+else
+ if [ mpi.c -nt mpi ]
+ then
+  mpicc main.c base_station.c sensor_node.c -o main.o  -lpthread  -lm -std=c99 -D_POSIX_C_SOURCE=199309L
+ fi
+fi
+
+srun main.o 3 3 6000 20
+
+exit 0

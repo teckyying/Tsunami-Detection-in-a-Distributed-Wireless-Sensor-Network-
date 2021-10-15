@@ -1,78 +1,336 @@
+------------------------------------------------------------------------------------------------------
 Iteration: 2
-Rank: 1						Coordinates: (0, 1) 
-Random height: 6438.237		Moving Average: 6438.237 
+Logged time: Fri 2021-10-15 23:15:21			
+Alert reported time: Fri 2021-10-15 23:15:19			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+3					(1, 0)			7958.389			192.168.1.135 (YYs-MacBook-Air)
+
 Adjacent Nodes		Coord			Height(m)			IPv4
-3					(1, 1)			6282.377				IPV4
-0					(0, 0)			6399.577				IPV4
----------------------------------------------------------------------------------
+0					(0, 0)			6034.233			192.168.1.135 (YYs-MacBook-Air)
+6					(2, 0)			7865.357			192.168.1.135 (YYs-MacBook-Air)
+4					(1, 1)			7537.421			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 0.000000
+Total Messages send between reporting node and base station: 1
+Number of adjacent matches to reporting node: 2
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+Iteration: 3
+Logged time: Fri 2021-10-15 23:15:22			
+Alert reported time: Fri 2021-10-15 23:15:19			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+4					(1, 1)			7537.421			192.168.1.135 (YYs-MacBook-Air)
+
+Adjacent Nodes		Coord			Height(m)			IPv4
+1					(0, 1)			5481.823			192.168.1.135 (YYs-MacBook-Air)
+7					(2, 1)			7467.547			192.168.1.135 (YYs-MacBook-Air)
+3					(1, 0)			7958.389			192.168.1.135 (YYs-MacBook-Air)
+5					(1, 2)			7093.824			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 1.005205
+Total Messages send between reporting node and base station: 1
+Number of adjacent matches to reporting node: 3
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 Iteration: 4
-Rank: 0						Coordinates: (0, 0) 
-Random height: 7462.296		Moving Average: 6930.937 
+Logged time: Fri 2021-10-15 23:15:23			
+Alert reported time: Fri 2021-10-15 23:15:19			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+5					(1, 2)			7093.824			192.168.1.135 (YYs-MacBook-Air)
+
 Adjacent Nodes		Coord			Height(m)			IPv4
-2					(1, 0)			6541.349				IPV4
-1					(0, 1)			7059.634				IPV4
----------------------------------------------------------------------------------
+2					(0, 2)			7037.539			192.168.1.135 (YYs-MacBook-Air)
+8					(2, 2)			6724.520			192.168.1.135 (YYs-MacBook-Air)
+4					(1, 1)			7537.421			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 2.010350
+Total Messages send between reporting node and base station: 1
+Number of adjacent matches to reporting node: 3
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 Iteration: 5
-Rank: 1						Coordinates: (0, 1) 
-Random height: 7681.032		Moving Average: 7059.634 
+Logged time: Fri 2021-10-15 23:15:24			
+Alert reported time: Fri 2021-10-15 23:15:19			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+6					(2, 0)			7865.357			192.168.1.135 (YYs-MacBook-Air)
+
 Adjacent Nodes		Coord			Height(m)			IPv4
-3					(1, 1)			7068.154				IPV4
-0					(0, 0)			6930.937				IPV4
----------------------------------------------------------------------------------
+3					(1, 0)			7958.389			192.168.1.135 (YYs-MacBook-Air)
+7					(2, 1)			7467.547			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 3.014637
+Total Messages send between reporting node and base station: 1
+Number of adjacent matches to reporting node: 2
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+Iteration: 6
+Logged time: Fri 2021-10-15 23:15:25			
+Alert reported time: Fri 2021-10-15 23:15:19			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+7					(2, 1)			7467.547			192.168.1.135 (YYs-MacBook-Air)
+
+Adjacent Nodes		Coord			Height(m)			IPv4
+4					(1, 1)			7537.421			192.168.1.135 (YYs-MacBook-Air)
+6					(2, 0)			7865.357			192.168.1.135 (YYs-MacBook-Air)
+8					(2, 2)			6724.520			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 4.019719
+Total Messages send between reporting node and base station: 1
+Number of adjacent matches to reporting node: 2
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+Iteration: 8
+Logged time: Fri 2021-10-15 23:15:27			
+Alert reported time: Fri 2021-10-15 23:15:25			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+3					(1, 0)			7256.889			192.168.1.135 (YYs-MacBook-Air)
+
+Adjacent Nodes		Coord			Height(m)			IPv4
+0					(0, 0)			6765.391			192.168.1.135 (YYs-MacBook-Air)
+6					(2, 0)			7519.873			192.168.1.135 (YYs-MacBook-Air)
+4					(1, 1)			7329.824			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 0.019640
+Total Messages send between reporting node and base station: 2
+Number of adjacent matches to reporting node: 3
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+Iteration: 9
+Logged time: Fri 2021-10-15 23:15:28			
+Alert reported time: Fri 2021-10-15 23:15:22			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+6					(2, 0)			7282.136			192.168.1.135 (YYs-MacBook-Air)
+
+Adjacent Nodes		Coord			Height(m)			IPv4
+3					(1, 0)			7712.968			192.168.1.135 (YYs-MacBook-Air)
+7					(2, 1)			6906.140			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 4.029783
+Total Messages send between reporting node and base station: 2
+Number of adjacent matches to reporting node: 2
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 Iteration: 10
-Rank: 2						Coordinates: (1, 0) 
-Random height: 7335.410		Moving Average: 6369.250 
+Logged time: Fri 2021-10-15 23:15:29			
+Alert reported time: Fri 2021-10-15 23:15:22			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+7					(2, 1)			6906.140			192.168.1.135 (YYs-MacBook-Air)
+
 Adjacent Nodes		Coord			Height(m)			IPv4
-0					(0, 0)			6580.319				IPV4
-3					(1, 1)			6807.208				IPV4
----------------------------------------------------------------------------------
-Iteration: 11
-Rank: 3						Coordinates: (1, 1) 
-Random height: 7924.688		Moving Average: 6807.208 
+4					(1, 1)			7130.971			192.168.1.135 (YYs-MacBook-Air)
+6					(2, 0)			7282.136			192.168.1.135 (YYs-MacBook-Air)
+8					(2, 2)			7226.024			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 5.034975
+Total Messages send between reporting node and base station: 2
+Number of adjacent matches to reporting node: 3
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+Iteration: 12
+Logged time: Fri 2021-10-15 23:15:31			
+Alert reported time: Fri 2021-10-15 23:15:28			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+8					(2, 2)			6850.648			192.168.1.135 (YYs-MacBook-Air)
+
 Adjacent Nodes		Coord			Height(m)			IPv4
-1					(0, 1)			7127.421				IPV4
-2					(1, 0)			6369.250				IPV4
----------------------------------------------------------------------------------
+5					(1, 2)			6662.711			192.168.1.135 (YYs-MacBook-Air)
+7					(2, 1)			6505.842			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 10.046789
+Total Messages send between reporting node and base station: 1
+Number of adjacent matches to reporting node: 2
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 Iteration: 13
-Rank: 0						Coordinates: (0, 0) 
-Random height: 7256.428		Moving Average: 6715.542 
+Logged time: Fri 2021-10-15 23:15:32			
+Alert reported time: Fri 2021-10-15 23:15:28			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+3					(1, 0)			6989.153			192.168.1.135 (YYs-MacBook-Air)
+
 Adjacent Nodes		Coord			Height(m)			IPv4
-2					(1, 0)			6643.903				IPV4
-1					(0, 1)			6818.749				IPV4
----------------------------------------------------------------------------------
-Iteration: 14
-Rank: 1						Coordinates: (0, 1) 
-Random height: 5584.060		Moving Average: 6818.749 
-Adjacent Nodes		Coord			Height(m)			IPv4
-3					(1, 1)			6729.972				IPV4
-0					(0, 0)			6715.542				IPV4
----------------------------------------------------------------------------------
+0					(0, 0)			7005.926			192.168.1.135 (YYs-MacBook-Air)
+6					(2, 0)			7428.100			192.168.1.135 (YYs-MacBook-Air)
+4					(1, 1)			7253.980			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 2.036448
+Total Messages send between reporting node and base station: 3
+Number of adjacent matches to reporting node: 3
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 Iteration: 15
-Rank: 2						Coordinates: (1, 0) 
-Random height: 7742.515		Moving Average: 6643.903 
+Logged time: Fri 2021-10-15 23:15:34			
+Alert reported time: Fri 2021-10-15 23:15:31			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+4					(1, 1)			6988.003			192.168.1.135 (YYs-MacBook-Air)
+
 Adjacent Nodes		Coord			Height(m)			IPv4
-0					(0, 0)			6715.542				IPV4
-3					(1, 1)			6729.972				IPV4
----------------------------------------------------------------------------------
+1					(0, 1)			6426.533			192.168.1.135 (YYs-MacBook-Air)
+7					(2, 1)			6317.962			192.168.1.135 (YYs-MacBook-Air)
+3					(1, 0)			6796.352			192.168.1.135 (YYs-MacBook-Air)
+5					(1, 2)			6702.583			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 1.039156
+Total Messages send between reporting node and base station: 2
+Number of adjacent matches to reporting node: 2
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 Iteration: 16
-Rank: 3						Coordinates: (1, 1) 
-Random height: 6421.027		Moving Average: 6729.972 
+Logged time: Fri 2021-10-15 23:15:35			
+Alert reported time: Fri 2021-10-15 23:15:31			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+5					(1, 2)			6702.583			192.168.1.135 (YYs-MacBook-Air)
+
 Adjacent Nodes		Coord			Height(m)			IPv4
-1					(0, 1)			6818.749				IPV4
-2					(1, 0)			6643.903				IPV4
----------------------------------------------------------------------------------
-Iteration: 18
-Rank: 0						Coordinates: (0, 0) 
-Random height: 5283.003		Moving Average: 6492.227 
+2					(0, 2)			7349.987			192.168.1.135 (YYs-MacBook-Air)
+8					(2, 2)			7070.620			192.168.1.135 (YYs-MacBook-Air)
+4					(1, 1)			6988.003			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 2.042409
+Total Messages send between reporting node and base station: 2
+Number of adjacent matches to reporting node: 2
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
+Iteration: 17
+Logged time: Fri 2021-10-15 23:15:36			
+Alert reported time: Fri 2021-10-15 23:15:31			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+3					(1, 0)			6796.352			192.168.1.135 (YYs-MacBook-Air)
+
 Adjacent Nodes		Coord			Height(m)			IPv4
-2					(1, 0)			6377.087				IPV4
-1					(0, 1)			6874.991				IPV4
----------------------------------------------------------------------------------
+0					(0, 0)			7010.030			192.168.1.135 (YYs-MacBook-Air)
+6					(2, 0)			7535.412			192.168.1.135 (YYs-MacBook-Air)
+4					(1, 1)			6988.003			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 3.047510
+Total Messages send between reporting node and base station: 4
+Number of adjacent matches to reporting node: 2
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------
 Iteration: 19
-Rank: 1						Coordinates: (0, 1) 
-Random height: 6719.448		Moving Average: 6874.991 
+Logged time: Fri 2021-10-15 23:15:38			
+Alert reported time: Fri 2021-10-15 23:15:34			
+Alert type:			
+
+Reporting Node		Coord			Height(m)			IPv4
+1					(0, 1)			6702.583			192.168.1.135 (YYs-MacBook-Air)
+
 Adjacent Nodes		Coord			Height(m)			IPv4
-3					(1, 1)			6742.775				IPV4
-0					(0, 0)			6492.227				IPV4
----------------------------------------------------------------------------------
+4					(1, 1)			7070.620			192.168.1.135 (YYs-MacBook-Air)
+0					(0, 0)			6988.003			192.168.1.135 (YYs-MacBook-Air)
+2					(0, 2)			7535.412			192.168.1.135 (YYs-MacBook-Air)
+
+Satellite altimeter reporting time: 
+Satellite altimeter reporting height (m): 
+Satellite altimeter reporting Coord: 
+
+Communication Time (seconds): 17.077525
+Total Messages send between reporting node and base station: 1
+Number of adjacent matches to reporting node: 2
+Max. tolerance range between nodes readings (m): 500
+Max. tolerance range between satellite altimeter and reporting node readings (m): 500
+------------------------------------------------------------------------------------------------------
 SUMMARY: 

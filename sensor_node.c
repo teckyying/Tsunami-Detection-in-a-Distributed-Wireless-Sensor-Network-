@@ -2,23 +2,24 @@
 #include "node.h"
 #include "helper.h"
 
+#include <arpa/inet.h>
+#include <ifaddrs.h>
+#include <string.h>
+#include <time.h>
+
 #define SHIFT_ROW 0
 #define SHIFT_COL 1
 #define DISP 1
-
 #define DIMENSION 2     // 2D topology
 #define NUM_NBR 4    // maximum number of adjacent neighbourhood nodes
-
 #define INTERVAL 10     // time interval in seconds
-#define TOLERANCE_RANGE 500     // tolerance range
-
-
 #define MOVING_AVG_WINDOW 5
 
 // Function Prototype
 float generate_random_values(int rank, int iter);
 float calculate_average(struct Node* head_node, struct Node* last_node);
 int compare_with_neighbours(float moving_average, float receive[]);
+void get_ip_address(char ip_addr[15]);
 
 int sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int threshold){
     MPI_Comm comm2D;
@@ -40,9 +41,8 @@ int sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int th
     MPI_Comm_size(comm, &size);         // size of the slave(sensor_nodes) communicator
     MPI_Comm_rank(comm, &alert.rank);         // rank of the slave(sensor_nodes) communicator
 
-    dims[0] = dims[1] = 0;   // Specify the number of nodes in each dimension. A value of 0 indicates that MPI_Dims_create should fill in a suitable value.
-    // dims[0] = nrows;    // specify number of rows
-    // dims[1] = ncols;    // specify number of columns
+    dims[0] = nrows;    // specify number of rows
+    dims[1] = ncols;    // specify number of columns
 
     /* Create cartesian topology for processes */
     MPI_Dims_create(size, ndims, dims);
@@ -56,7 +56,7 @@ int sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int th
         printf("ERROR[%d] creating CART\n", ierr);
     }
  
-	/* find my coordinates in the cartesian communicator group */
+	/* Get coordinates */
 	MPI_Cart_coords(comm2D, alert.rank, ndims, alert.coordinates); // coordinates is returned into the coord array
 
     /* Get rank of neighbours */
@@ -70,8 +70,17 @@ int sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int th
             alert.neighbours_coordinates[i][0] = -2;
             alert.neighbours_coordinates[i][1] = -2;
         }
-    }
-   
+    } 
+
+    /** Get and exhange IPv4 address with neighbours */
+    get_ip_address(alert.ip_address);
+    MPI_Neighbor_allgather(alert.ip_address, 15, MPI_CHAR, alert.neighbours_ip_address, 15, MPI_CHAR, comm2D);
+
+    /** Get and exhange processor name address with neighbours */
+    int length;
+    MPI_Get_processor_name(alert.process_name, &length);
+    MPI_Neighbor_allgather(alert.process_name, MPI_MAX_PROCESSOR_NAME, MPI_CHAR, alert.neighbours_process_name, MPI_MAX_PROCESSOR_NAME, MPI_CHAR, comm2D);
+
 
     MPI_Request send_request[NUM_NBR];
     MPI_Request receive_request[NUM_NBR];
@@ -80,7 +89,7 @@ int sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int th
     MPI_Request send_alert_request[1];
     MPI_Request broadcast_request;
 
-    MPI_Ibcast(&exit, 1, MPI_INT, world_size - 1, world_comm, &broadcast_request);
+    MPI_Irecv(&exit, 1, MPI_INT, world_size - 1, EXIT, world_comm, &broadcast_request);
     
     while (!exit){
         /* Generate random height */
@@ -127,10 +136,20 @@ int sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int th
         }
 
         if (alert.moving_average > threshold){ // if moving average exceeds the threshold
+            // request = TRUE;
+            // for (int i = 0; i < NUM_NBR; i++){
+            //     if (alert.neighbours_rank[i] != -2){    // if neighbour exists
+            //         MPI_Isend(&request, 1, MPI_INT, alert.neighbours_rank[i], REQUEST_VALUE_TAG, comm2D, &send_request[i]);
+            //     }
+            // }
+            // MPI_Waitall(NUM_NBR, send_request, send_status);
+    
             alert.match = compare_with_neighbours(alert.moving_average, alert.neighbours_moving_average);   // Compare moving average with adjacent nodes
             
             if (alert.match >= 2) {       // if at least two or more adjacent nodes match the reading of the local node 
                 // printf("height: %.3f    average:%.3f\n", alert.random_height, alert.moving_average);
+                get_current_time(alert.send_datetime);
+                alert.send_time = MPI_Wtime();
                 MPI_Isend(&alert, 1, alertMessageType, world_size - 1, ALERT_TAG, world_comm, &send_alert_request[1]);
             }
         }
@@ -179,4 +198,21 @@ int compare_with_neighbours(float moving_average, float receive[]){
     }
     // printf("%d   %.3f     %.3f   %.3f     %.3f    %.3f\n", match, moving_average, receive[0], receive[1], receive[2], receive[3]);
     return match;
+}
+
+void get_ip_address(char ip_addr[15]) {
+    // Reference: https://stackoverflow.com/a/4139893
+    struct ifaddrs *ifap, *ifa;
+    struct sockaddr_in *sa;
+    char *tmp_ip_addr;
+  
+    getifaddrs (&ifap);
+    for (ifa = ifap; ifa; ifa = ifa->ifa_next) {
+        if (ifa->ifa_addr && ifa->ifa_addr->sa_family==AF_INET) {
+            sa = (struct sockaddr_in *) ifa->ifa_addr;
+            tmp_ip_addr = (char *)inet_ntoa(sa->sin_addr);
+            memcpy(ip_addr, tmp_ip_addr, 15 * sizeof(char));
+        }
+    }
+    freeifaddrs(ifap);
 }
