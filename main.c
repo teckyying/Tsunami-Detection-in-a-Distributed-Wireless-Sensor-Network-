@@ -1,6 +1,6 @@
 /**
  * mpicc -Wall -o main.o main.c base_station.c sensor_node.c
- * mpirun -np 5 main.o 2 2 6000 10
+ * mpirun -np 5 main.o 2 2 6000 20
  * mpirun -oversubscribe -np 10 main.o 3 3 6000 20
  *  mpirun -np 2 main.o
  * */

@@ -1,0 +1,78 @@
+Iteration: 2
+Rank: 1						Coordinates: (0, 1) 
+Random height: 6438.237		Moving Average: 6438.237 
+Adjacent Nodes		Coord			Height(m)			IPv4
+3					(1, 1)			6282.377				IPV4
+0					(0, 0)			6399.577				IPV4
+---------------------------------------------------------------------------------
+Iteration: 4
+Rank: 0						Coordinates: (0, 0) 
+Random height: 7462.296		Moving Average: 6930.937 
+Adjacent Nodes		Coord			Height(m)			IPv4
+2					(1, 0)			6541.349				IPV4
+1					(0, 1)			7059.634				IPV4
+---------------------------------------------------------------------------------
+Iteration: 5
+Rank: 1						Coordinates: (0, 1) 
+Random height: 7681.032		Moving Average: 7059.634 
+Adjacent Nodes		Coord			Height(m)			IPv4
+3					(1, 1)			7068.154				IPV4
+0					(0, 0)			6930.937				IPV4
+---------------------------------------------------------------------------------
+Iteration: 10
+Rank: 2						Coordinates: (1, 0) 
+Random height: 7335.410		Moving Average: 6369.250 
+Adjacent Nodes		Coord			Height(m)			IPv4
+0					(0, 0)			6580.319				IPV4
+3					(1, 1)			6807.208				IPV4
+---------------------------------------------------------------------------------
+Iteration: 11
+Rank: 3						Coordinates: (1, 1) 
+Random height: 7924.688		Moving Average: 6807.208 
+Adjacent Nodes		Coord			Height(m)			IPv4
+1					(0, 1)			7127.421				IPV4
+2					(1, 0)			6369.250				IPV4
+---------------------------------------------------------------------------------
+Iteration: 13
+Rank: 0						Coordinates: (0, 0) 
+Random height: 7256.428		Moving Average: 6715.542 
+Adjacent Nodes		Coord			Height(m)			IPv4
+2					(1, 0)			6643.903				IPV4
+1					(0, 1)			6818.749				IPV4
+---------------------------------------------------------------------------------
+Iteration: 14
+Rank: 1						Coordinates: (0, 1) 
+Random height: 5584.060		Moving Average: 6818.749 
+Adjacent Nodes		Coord			Height(m)			IPv4
+3					(1, 1)			6729.972				IPV4
+0					(0, 0)			6715.542				IPV4
+---------------------------------------------------------------------------------
+Iteration: 15
+Rank: 2						Coordinates: (1, 0) 
+Random height: 7742.515		Moving Average: 6643.903 
+Adjacent Nodes		Coord			Height(m)			IPv4
+0					(0, 0)			6715.542				IPV4
+3					(1, 1)			6729.972				IPV4
+---------------------------------------------------------------------------------
+Iteration: 16
+Rank: 3						Coordinates: (1, 1) 
+Random height: 6421.027		Moving Average: 6729.972 
+Adjacent Nodes		Coord			Height(m)			IPv4
+1					(0, 1)			6818.749				IPV4
+2					(1, 0)			6643.903				IPV4
+---------------------------------------------------------------------------------
+Iteration: 18
+Rank: 0						Coordinates: (0, 0) 
+Random height: 5283.003		Moving Average: 6492.227 
+Adjacent Nodes		Coord			Height(m)			IPv4
+2					(1, 0)			6377.087				IPV4
+1					(0, 1)			6874.991				IPV4
+---------------------------------------------------------------------------------
+Iteration: 19
+Rank: 1						Coordinates: (0, 1) 
+Random height: 6719.448		Moving Average: 6874.991 
+Adjacent Nodes		Coord			Height(m)			IPv4
+3					(1, 1)			6742.775				IPV4
+0					(0, 0)			6492.227				IPV4
+---------------------------------------------------------------------------------
+SUMMARY: 

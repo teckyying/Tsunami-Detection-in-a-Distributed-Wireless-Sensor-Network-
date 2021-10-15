@@ -24,18 +24,29 @@ int base_station(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int n
 
         if (flag){  
             MPI_Recv(&alert, 1, alertMessageType, probe_status.MPI_SOURCE, ALERT_TAG, world_comm, &status);
-            printf("alert message: %d  %.3f   %.3f\n", alert.rank, alert.moving_average, alert.random_height);
-            printf("IN BASE STATION: Rank %d\n", alert.rank);
+            printf("alert message: %d  %.3f   %.3f \n", alert.rank, alert.random_height, alert.moving_average);
+            printf("IN BASE STATION: Rank %d \n", alert.rank);
 
 			fprintf(logFile, "Iteration: %d\n", iteration);
-			fprintf(logFile, "Rank: \t\t\t\t %d\n", alert.rank);
-            fprintf(logFile, "Random height: %.3f         Moving Average: %.3f\n", alert.random_height, alert.moving_average);
-            fprintf(logFile, "-------------------------------------------------------\n");
+			fprintf(logFile, "Rank: %d\t\t\t\t\t\tCoordinates: (%d, %d) \n", alert.rank, alert.coordinates[0], alert.coordinates[1]);
+            fprintf(logFile, "Random height: %.3f\t\tMoving Average: %.3f \n", alert.random_height, alert.moving_average);
+
+            fprintf(logFile, "Adjacent Nodes\t\tCoord\t\t\tHeight(m)\t\t\tIPv4\n");
+            for (int i = 0; i < 4; i++){
+                if (alert.neighbours_rank[i] != -2){
+                    fprintf(logFile, "%d\t\t\t\t\t(%d, %d)\t\t\t%.3f\t\t\t\tIPV4\n", 
+                    alert.neighbours_rank[i], alert.neighbours_coordinates[i][0], alert.neighbours_coordinates[i][1], alert.neighbours_moving_average[i]);
+                }
+                
+            }
+            
+            fprintf(logFile, "---------------------------------------------------------------------------------\n");
 
             fflush(stdout);
         }
         iteration += 1;
-        sleep(2);
+        sleep(1);
+ 
 
     }
     // Send termination message to all the other processor
