@@ -7,22 +7,23 @@ struct Queue* current_node = NULL;   // current element aka the last element for
 int queue_count =0;    // ensure the number of node list doesnt exceed the moving average window
 
 
-// void *ThreadFunc(void *pArg);
-// int shutdown = FALSE;
+void *ThreadFunc(void *pArg);
+int shutdown;
 
 int base_station(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int num_of_iterations,int threshold){
     FILE *logFile;
     int iteration, flag, world_size;
+    // shutdown = FALSE;
     int exit = FALSE;
     double alert_received_time;
     int *receive_count= NULL;
     char loggedTime[25];
     
-    // pthread_t tid[1];	// create pthreads
-    // int argArray[3];
-    // argArray[0]=nrows;
-    // argArray[1]=ncols;
-    // argArray[2]=threshold;
+    pthread_t tid[1];	// create pthreads
+    int argArray[3];
+    argArray[0]=nrows;
+    argArray[1]=ncols;
+    argArray[2]=threshold;
 
     MPI_Comm_size(world_comm, &world_size); // size of the world communicator
     MPI_Status probe_status;
@@ -40,7 +41,7 @@ int base_station(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int n
     logFile = fopen("logFile.txt", "w");
 
     iteration = 0;
-    // pthread_create(&tid[0], 0, ThreadFunc, argArray);
+    pthread_create(&tid[0], 0, ThreadFunc, argArray);
     while (iteration < num_of_iterations){
         // Check it there's any incoming message
 		MPI_Iprobe(MPI_ANY_SOURCE, ALERT_TAG, world_comm, &flag, &probe_status);
@@ -87,14 +88,15 @@ int base_station(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int n
         sleep(1);
     }
     // Send termination message to all the other processor
-    // shutdown = TRUE;
+    shutdown = TRUE;
     exit = TRUE;
 
     for (int i = 0; i < world_size - 1; i++ ){
         MPI_Send(&exit, 1, MPI_INT, i, EXIT, world_comm);
+        // MPI_Send(&shutdown, 1, MPI_INT, i, EXIT, world_comm);
     }
 
-    // pthread_join(tid[0], NULL);
+    pthread_join(tid[0], NULL);
   
 
 	fprintf(logFile, "SUMMARY: \n");
@@ -107,51 +109,51 @@ int base_station(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int n
     return 0;
 }
 
-// void *ThreadFunc(void *pArg){
-//     int x,y;
-//     int *val_p = (int *) pArg;
-//     time_t timestamp; /* calendar time */
-//     // struct threadArgs *args = pArg;
-//     int height = 0;
-//     while (shutdown == FALSE) { 
-//         srand(time(0));
-//         height =  (rand() % (10000 - val_p[2] + 1)) + val_p[2];
-//         x = rand() % val_p[1];
-//         y = rand() % val_p[0];
-//         timestamp = time(NULL); /* get current cal time */
-//         if (head_node == NULL){
-//             //create node
-//             head_node = newQueue(timestamp,x,y,height);
-//             current_node = head_node;
-//             queue_count += 1;
-//         }
-//         else if (queue_count < 10){
-//             struct Queue* newqueue = newQueue(timestamp,x,y,height);
-//             current_node->next = newqueue;
-//             current_node = newqueue;
-//             //printf(current_node->next);
-//             queue_count += 1;
-//         }
-//         else{
-//             //remove first 
-//             struct Queue* temp = head_node;
-//             head_node = head_node->next;
-//             free(temp);
-//             queue_count -= 1;
-//             struct Queue* newqueue = newQueue(timestamp,x,y,height);
-//             current_node->next = newqueue;
-//             current_node = newqueue;
-//             queue_count += 1;
-//         }
-//         // printf("the number of item in node is: %d",queue_count);
-//         // printf("The time :%s",asctime( localtime(&timestamp) ) );
-//         // printf("row%d\n",val_p[0]);
-//         // printf("col%d\n",val_p[1] );
-//         // printf("cordinatex%d\n",x );
-//         // printf("cordinatey%d\n",y );
-//         sleep(1);
-//     } 
-//     pthread_exit(NULL);
-//     return NULL;
+void *ThreadFunc(void *pArg){
+    int x,y;
+    int *val_p = (int *) pArg;
+    time_t timestamp; /* calendar time */
+    // struct threadArgs *args = pArg;
+    int height = 0;
+    while (shutdown == FALSE) { 
+        srand(time(0));
+        height =  (rand() % (10000 - val_p[2] + 1)) + val_p[2];
+        x = rand() % val_p[1];
+        y = rand() % val_p[0];
+        timestamp = time(NULL); /* get current cal time */
+        if (head_node == NULL){
+            //create node
+            head_node = newQueue(timestamp,x,y,height);
+            current_node = head_node;
+            queue_count += 1;
+        }
+        else if (queue_count < 10){
+            struct Queue* newqueue = newQueue(timestamp,x,y,height);
+            current_node->next = newqueue;
+            current_node = newqueue;
+            //printf(current_node->next);
+            queue_count += 1;
+        }
+        else{
+            //remove first 
+            struct Queue* temp = head_node;
+            head_node = head_node->next;
+            free(temp);
+            queue_count -= 1;
+            struct Queue* newqueue = newQueue(timestamp,x,y,height);
+            current_node->next = newqueue;
+            current_node = newqueue;
+            queue_count += 1;
+        }
+        // printf("the number of item in node is: %d",queue_count);
+        // printf("The time :%s",asctime( localtime(&timestamp) ) );
+        // printf("row%d\n",val_p[0]);
+        // printf("col%d\n",val_p[1] );
+        // printf("cordinatex%d\n",x );
+        // printf("cordinatey%d\n",y );
+        sleep(1);
+    } 
+    pthread_exit(NULL);
+    return NULL;
        
-// }
+}

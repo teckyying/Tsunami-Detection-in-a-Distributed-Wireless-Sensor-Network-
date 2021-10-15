@@ -16,8 +16,10 @@
 #define TOLERANCE_RANGE 500     // tolerance range between nodes reading
 
 #define REQUEST_VALUE_TAG 2
-#define EXIT 3
-#define ALERT_TAG 4
+#define SEND_VALUE_TAG 3
+#define EXIT 4
+#define ALERT_TAG 5
+#define THREAD_EXIT 6
 
 #define TRUE 1
 #define FALSE 0

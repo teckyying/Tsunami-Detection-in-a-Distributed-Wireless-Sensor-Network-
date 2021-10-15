@@ -21,8 +21,12 @@ float calculate_average(struct Node* head_node, struct Node* last_node);
 int compare_with_neighbours(float moving_average, float receive[]);
 void get_ip_address(char ip_addr[15]);
 
+void *SensorHelperFunc(void *pArg);
+MPI_Comm comm2D;
+struct alertMessageStruct alert;
+
 int sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int threshold){
-    MPI_Comm comm2D;
+    // MPI_Comm comm2D;
     int ndims = DIMENSION;
     int size, reorder, ierr, world_size;
     int dims[ndims];
@@ -32,8 +36,9 @@ int sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int th
     int node_list_count = 0;    // ensure the number of node list doesnt exceed the moving average window
     int iter = 0;
     int exit = FALSE;
+    int request_from_neighbour;
 
-    struct alertMessageStruct alert;
+    // struct alertMessageStruct alert;
 	MPI_Datatype alertMessageType;
     create_alert_message_type(alert, &alertMessageType);
 
@@ -81,6 +86,10 @@ int sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int th
     MPI_Get_processor_name(alert.process_name, &length);
     MPI_Neighbor_allgather(alert.process_name, MPI_MAX_PROCESSOR_NAME, MPI_CHAR, alert.neighbours_process_name, MPI_MAX_PROCESSOR_NAME, MPI_CHAR, comm2D);
 
+	pthread_t tid[1];	// create pthreads
+	int threadNum[1];	// to store unique id of the thread
+	threadNum[0] = alert.rank;
+	pthread_create(&tid[0], 0, SensorHelperFunc, &threadNum[0]);
 
     MPI_Request send_request[NUM_NBR];
     MPI_Request receive_request[NUM_NBR];
@@ -92,6 +101,7 @@ int sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int th
     MPI_Irecv(&exit, 1, MPI_INT, world_size - 1, EXIT, world_comm, &broadcast_request);
     
     while (!exit){
+        request_from_neighbour = FALSE;
         /* Generate random height */
         alert.random_height = generate_random_values(alert.rank, iter);
         // printf("Rank %d: %.3f \n", rank, random_height);
@@ -124,25 +134,27 @@ int sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int th
 
         /* Gather neighbours' values */ // CHANGE THIS LATER. SHOULD ONLY RECEIVE VALUE IF MOVING AVERAGE > THRESHOLD
         /* Request values from its adjacent process */
-        for (int i = 0; i < NUM_NBR; i++){
-            MPI_Isend(&alert.moving_average, 1, MPI_FLOAT, alert.neighbours_rank[i], 0, comm2D, &send_request[i]);
-            MPI_Irecv(&alert.neighbours_moving_average[i], 1, MPI_FLOAT, alert.neighbours_rank[i], 0, comm2D, &receive_request[i]);
-        }
-        MPI_Waitall(NUM_NBR, send_request, send_status);
-        MPI_Waitall(NUM_NBR, receive_request, receive_status);  
+        // for (int i = 0; i < NUM_NBR; i++){
+        //     MPI_Isend(&alert.moving_average, 1, MPI_FLOAT, alert.neighbours_rank[i], 0, comm2D, &send_request[i]);
+        //     MPI_Irecv(&alert.neighbours_moving_average[i], 1, MPI_FLOAT, alert.neighbours_rank[i], 0, comm2D, &receive_request[i]);
+        // }
+        // MPI_Waitall(NUM_NBR, send_request, send_status);
+        // MPI_Waitall(NUM_NBR, receive_request, receive_status);  
 
-        for (int i = 0; i < NUM_NBR; i++){  // if neighbour does't exist, change the value to -2.
-            alert.neighbours_moving_average[i] = (alert.neighbours_rank[i] == -2) ? -2 : alert.neighbours_moving_average[i];
-        }
+        // for (int i = 0; i < NUM_NBR; i++){  // if neighbour does't exist, change the value to -2.
+        //     alert.neighbours_moving_average[i] = (alert.neighbours_rank[i] == -2) ? -2 : alert.neighbours_moving_average[i];
+        // }
 
         if (alert.moving_average > threshold){ // if moving average exceeds the threshold
-            // request = TRUE;
-            // for (int i = 0; i < NUM_NBR; i++){
-            //     if (alert.neighbours_rank[i] != -2){    // if neighbour exists
-            //         MPI_Isend(&request, 1, MPI_INT, alert.neighbours_rank[i], REQUEST_VALUE_TAG, comm2D, &send_request[i]);
-            //     }
-            // }
-            // MPI_Waitall(NUM_NBR, send_request, send_status);
+            request_from_neighbour = TRUE;  // doesnt't matter what we send here
+            for (int i = 0; i < NUM_NBR; i++){
+                int neighbour_rank = alert.neighbours_rank[i] == -2 ? MPI_PROC_NULL : alert.neighbours_rank[i];
+                MPI_Isend(&request_from_neighbour, 1, MPI_INT, neighbour_rank, REQUEST_VALUE_TAG, comm2D, &send_request[i]);
+                MPI_Irecv(&alert.neighbours_moving_average[i], 1, MPI_FLOAT, neighbour_rank, SEND_VALUE_TAG, comm2D, &receive_request[i]);
+            }
+            /* Wait for all requests to complete to make sure all neighbours have sent their value */
+            MPI_Waitall(NUM_NBR, send_request, send_status);
+            MPI_Waitall(NUM_NBR, receive_request, receive_status);
     
             alert.match = compare_with_neighbours(alert.moving_average, alert.neighbours_moving_average);   // Compare moving average with adjacent nodes
             
@@ -153,15 +165,17 @@ int sensor_node(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int th
                 MPI_Isend(&alert, 1, alertMessageType, world_size - 1, ALERT_TAG, world_comm, &send_alert_request[1]);
             }
         }
-
         sleep(3);
-
         if (exit == TRUE){
             printf("\nRank %d receive exit message\n", alert.rank);
             fflush(stdout);
          }
          iter++;
     }
+
+    MPI_Send(&exit, 1, MPI_INT, alert.rank, THREAD_EXIT, comm2D);   // signal thread to exit too
+    pthread_join(tid[0], NULL);
+
 	/* Clean up the type */
     MPI_Type_free(&alertMessageType);
     MPI_Comm_free(&comm2D);
@@ -215,4 +229,35 @@ void get_ip_address(char ip_addr[15]) {
         }
     }
     freeifaddrs(ifap);
+}
+
+void *SensorHelperFunc(void *pArg)
+{
+    int thread_rank = *((int*)pArg); // same rank as main process
+    int exit = FALSE;
+    int request = FALSE;
+
+    int flag;
+    MPI_Status probe_status;
+    MPI_Status receive_status;
+    MPI_Request broadcast_request;
+    MPI_Request send_request;
+
+    /* Check if main process sends an exit notification */
+    MPI_Irecv(&exit, 1, MPI_INT, thread_rank, THREAD_EXIT, comm2D, &broadcast_request); 
+
+    while (exit == FALSE){
+        request = FALSE;
+        /* Check if there's any incoming request from neightbours */
+        MPI_Iprobe(MPI_ANY_SOURCE, REQUEST_VALUE_TAG, comm2D, &flag, &probe_status);
+        if (flag){ // if TRUE
+            /* Receive the request */
+            MPI_Recv(&request, 1, MPI_INT, probe_status.MPI_SOURCE, REQUEST_VALUE_TAG, comm2D, &receive_status);
+            if (request == TRUE){   // Not really needed. But adding this condition just to confirm that it is a valid request.
+                /* Send moving average to neighbour that requested it */
+                MPI_Isend(&alert.moving_average, 1, MPI_FLOAT, receive_status.MPI_SOURCE, SEND_VALUE_TAG, comm2D, &send_request);
+            }
+        }
+    }
+    return NULL;
 }
