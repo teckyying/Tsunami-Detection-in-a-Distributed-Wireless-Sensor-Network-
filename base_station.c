@@ -6,11 +6,13 @@ struct Queue* head_node = NULL;   // first element for moving average
 struct Queue* current_node = NULL;   // current element aka the last element for moving average
 int queue_count =0;    // ensure the number of node list doesnt exceed the moving average window
 
-
 void *ThreadFunc(void *pArg);
-int shutdown;
+#define NUM_THREADS 1
+
+MPI_Comm baseComm;
 
 int base_station(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int num_of_iterations,int threshold){
+    baseComm = comm;
     FILE *logFile;
     int iteration, flag, world_size;
     // shutdown = FALSE;
@@ -18,12 +20,17 @@ int base_station(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int n
     double alert_received_time;
     int *receive_count= NULL;
     char loggedTime[25];
-    
-    pthread_t tid[1];	// create pthreads
-    int argArray[3];
+
+    /** Delete exit.txt from directory if it exists. **/
+    remove("exit.txt");
+
+    pthread_t tid[NUM_THREADS];	// create pthreads
+    // first thread
+    int argArray[4];
     argArray[0]=nrows;
     argArray[1]=ncols;
     argArray[2]=threshold;
+    argArray[3]=0; // rank of base station
 
     MPI_Comm_size(world_comm, &world_size); // size of the world communicator
     MPI_Status probe_status;
@@ -41,8 +48,15 @@ int base_station(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int n
     logFile = fopen("logFile.txt", "w");
 
     iteration = 0;
-    pthread_create(&tid[0], 0, ThreadFunc, argArray);
-    while (iteration < num_of_iterations){
+    pthread_create(&tid[0], 0, ThreadFunc, argArray);   // Thread for Satellite Altimeter
+    while ((iteration < num_of_iterations) && (exit == FALSE)){
+        /** Check is user created a file to exit **/
+        if (access( "exit.txt", F_OK ) != -1){
+            printf("EXITING. PLEASE WAIT A MOMENT.");
+            exit = TRUE;
+            break;
+        }
+  
         // Check it there's any incoming message
 		MPI_Iprobe(MPI_ANY_SOURCE, ALERT_TAG, world_comm, &flag, &probe_status);
 
@@ -88,14 +102,16 @@ int base_station(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int n
         sleep(1);
     }
     // Send termination message to all the other processor
-    shutdown = TRUE;
     exit = TRUE;
-
     for (int i = 0; i < world_size - 1; i++ ){
         MPI_Send(&exit, 1, MPI_INT, i, EXIT, world_comm);
-        // MPI_Send(&shutdown, 1, MPI_INT, i, EXIT, world_comm);
     }
 
+
+    printf("SIGNAL BASE TRHEAD TO EXIT\n");
+    fflush(stdout);
+    MPI_Send(&exit, 1, MPI_INT, 0, THREAD_EXIT, comm);   // signal base station thread to exit too
+  
     pthread_join(tid[0], NULL);
   
 
@@ -111,16 +127,27 @@ int base_station(MPI_Comm world_comm, MPI_Comm comm, int nrows, int ncols, int n
 
 void *ThreadFunc(void *pArg){
     int x,y;
-    int *val_p = (int *) pArg;
-    time_t timestamp; /* calendar time */
+    int exit = FALSE;
+    int *val_p = (int *)pArg;
+    time_t timestamp;
+    //char timestamp[25]; /* calendar time */
     // struct threadArgs *args = pArg;
     int height = 0;
-    while (shutdown == FALSE) { 
+    int thread_rank = val_p[3];
+    MPI_Request request;
+
+    /* Check if main process sends an exit notification */
+    MPI_Irecv(&exit, 1, MPI_INT, thread_rank, THREAD_EXIT, baseComm, &request); 
+
+    while (exit == FALSE) { 
+        //get_current_time(&timestamp);
+        //height = (float)rand()/(float)(8000/val_p[2]);
         srand(time(0));
-        height =  (rand() % (10000 - val_p[2] + 1)) + val_p[2];
-        x = rand() % val_p[1];
-        y = rand() % val_p[0];
-        timestamp = time(NULL); /* get current cal time */
+        height = (rand() % (9000 - 6000 + 1)) + 6000;
+        //float height = (float)rand()/(float)(8000/val_p[2]);
+        x = rand() % val_p[0];
+        y = rand() % val_p[1];
+        time(&timestamp); /* get current cal time */
         if (head_node == NULL){
             //create node
             head_node = newQueue(timestamp,x,y,height);
@@ -131,7 +158,6 @@ void *ThreadFunc(void *pArg){
             struct Queue* newqueue = newQueue(timestamp,x,y,height);
             current_node->next = newqueue;
             current_node = newqueue;
-            //printf(current_node->next);
             queue_count += 1;
         }
         else{
@@ -146,14 +172,22 @@ void *ThreadFunc(void *pArg){
             queue_count += 1;
         }
         // printf("the number of item in node is: %d",queue_count);
-        // printf("The time :%s",asctime( localtime(&timestamp) ) );
+        //timestamp2 = clock() - timestamp2;
+        //printf("The time :%ld\n",ctime(&timestamp) );
+        //printf("The time minues:%ld\n",clock()-timestamp2);
+        //double time_taken = ((double)timestamp2)/CLOCKS_PER_SEC;
+        //printf("The time minues:%f\n",time_taken);
         // printf("row%d\n",val_p[0]);
         // printf("col%d\n",val_p[1] );
+        // printf("height:%d\n",height);
         // printf("cordinatex%d\n",x );
         // printf("cordinatey%d\n",y );
+        // printf("\nThis program has been writeen at (date and time): %s", ctime(&timestamp));
         sleep(1);
     } 
-    pthread_exit(NULL);
+    //pthread_exit(NULL);
+    printf("ThreadFunc EXITS\n");
     return NULL;
        
 }
+

@@ -14,6 +14,7 @@
 #define MIN_HEIGHT 5000
 #define DEFAULT_THRESHOLD 6000      // default sensor threshold
 #define TOLERANCE_RANGE 500     // tolerance range between nodes reading
+#define DEFAULT_ITERATION 100
 
 #define REQUEST_VALUE_TAG 2
 #define SEND_VALUE_TAG 3

@@ -1,6 +1,8 @@
 /**
  * mpicc -Wall -pthread -o main.o main.c base_station.c sensor_node.c -lm
  * mpirun -oversubscribe -np 5 main.o 2 2 6000 20
+ * mpirun -oversubscribe -np 7 main.o 2 3 6000 20
+ * mpirun -oversubscribe -np 10 main.o 3 3 6000 20
  *  mpirun -np 2 main.o
  * */
 
@@ -38,6 +40,7 @@ int main(int argc, char *argv[]) {
 	} else {
 		nrows = ncols = (int)sqrt(size - 1);
 		threshold = DEFAULT_THRESHOLD;
+		num_of_iterations = DEFAULT_ITERATION;
 	}
 	
 	MPI_Comm_split(MPI_COMM_WORLD, rank == size - 1, 0, &comm);
